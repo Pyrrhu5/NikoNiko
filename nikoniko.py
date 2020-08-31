@@ -1,6 +1,6 @@
-# Nécessite les packages selenium, datetime, time et numpy :
-# 	pip install -U selenium
-#   etc...
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+
 # Nécessite le navigateur firefox : 
 # 	https://www.mozilla.org/fr/firefox/new/
 # Nécessite le driver geckodriver (l'utilitaire doit être dans le même répertoire que ce script) :
@@ -17,10 +17,17 @@ try:
 	from selenium.webdriver.common.keys import Keys
 	from numpy.random import choice
 except ModuleNotFoundError:
-	import subprocess
-	subprocess.run("pip3 install -r requirements.txt", shell=True, check=True)
+	print("""Dependencies are not installed. Run:
+pip install -r requirements.txt""")
+	exit(1)
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
+ERRORFILE = 'errors.log'
+HISTOFILE = 'moods.log'
+# check_page and click_mood functions will wait a maximum of WAIT_DELAY * TRIES_UNTIL_TIMEOUT before it kills the script execution
+WAIT_DELAY = 1
+TRIES_UNTIL_TIMEOUT = 5
+
 
 class Config():
 	def __init__():
@@ -51,14 +58,6 @@ class Config():
 
 		return val
 
-
-
-ERRORFILE = 'errors.log'
-HISTOFILE = 'moods.log'
-
-# check_page and click_mood functions will wait a maximum of WAIT_DELAY * TRIES_UNTIL_TIMEOUT before it kills the script execution
-WAIT_DELAY = 1
-TRIES_UNTIL_TIMEOUT = 5
 
 MOODS = ('#EE5555','#EE8C55','#CCF576','#62DA84') # de gauche à droite : du pire au meilleur
 
