@@ -28,9 +28,11 @@ class Config():
 		self.file = os.path.join(MODULE_PATH, ".env")
 		dotenv.load_dotenv(self.file)
 
+		# NikoNiko config
 		self.endpoint = self.get_env("endpoint", safe=False)
 		self.username = self.get_env("username", safe=False)
 		self.password = self.get_env("password", safe=True)
+
 
 	def _get_env(self, name, safe=False):
 		if name in os.environ:
