@@ -6,17 +6,50 @@
 # Nécessite le driver geckodriver (l'utilitaire doit être dans le même répertoire que ce script) :
 # 	https://github.com/mozilla/geckodriver/releases
 
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-
+import os
+from getpass import getpass
 from datetime import datetime
-
-from numpy.random import choice
-
 import time
 
-USERNAME = 'xxx@noveane.com'
-PWD = 'xxx'
+try:
+	import dotenv
+	from selenium import webdriver
+	from selenium.webdriver.common.keys import Keys
+	from numpy.random import choice
+except ModuleNotFoundError:
+	import subprocess
+	subprocess.run("pip3 install -r requirements.txt", shell=True, check=True)
+
+MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
+
+class Config():
+	def __init__():
+
+		self.file = os.path.join(MODULE_PATH, ".env")
+		dotenv.load_dotenv(self.file)
+
+		self.endpoint = self.get_env("endpoint", safe=False)
+		self.username = self.get_env("username", safe=False)
+		self.password = self.get_env("password", safe=True)
+
+	def _get_env(self, name, safe=False):
+		if name in os.environ:
+			return os.environ.get(name)
+		else:
+			return self.set_env(name, safe)
+
+	def _set_env(self, name, safe=False):
+		if not safe:
+			val = input(f"Input value for {name}:\n")
+		else:
+			val = getpass(f"Input value for {name}:\nWill be save in plain-text\n")
+		with open(os.file, "a") as f:
+			f.write(f"\"{name}\"=\"{val}\"")
+		os.environ[name] = str(val)
+
+		return val
+
+
 
 ERRORFILE = 'errors.log'
 HISTOFILE = 'moods.log'
@@ -31,17 +64,18 @@ READABLE_MOODS = {'#EE5555' : 'D:','#EE8C55' : '):','#CCF576' : '(:','#62DA84' :
 
 MOODS_PROB = (0.05,0.25,0.6,0.1) # probabilities of mood, in the same order
 
-def fill_mood():
+
+def fill_mood(config=CONFIG):
     browser = webdriver.Firefox()
-    browser.get('https://noveane.ilucca.net/identity/login/')
+    browser.get(config.endpoint + '/identity/login/')
     
     check_page(browser, 'NOVEANE', '''Impossible d'atteindre la page Ilucca''')
     
     elem = browser.find_element_by_name('UserName')
-    elem.send_keys(USERNAME)
+    elem.send_keys(config.username)
     
     elem = browser.find_element_by_name('Password')
-    elem.send_keys(PWD + Keys.RETURN)
+    elem.send_keys(config.password + Keys.RETURN)
     
     check_page(browser, 'Lucca | Accueil', 'Impossible de se connecter à Ilucca')
 	
@@ -84,4 +118,5 @@ def check_page(browser, pageName, errorMessage):
             exit()
 
 if __name__ == "__main__":
+	CONFIG = Config()
 	fill_mood()
