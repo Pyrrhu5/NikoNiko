@@ -17,7 +17,7 @@ try:
 	from selenium.webdriver.common.keys import Keys
 	from numpy.random import choice
 except ModuleNotFoundError:
-	print("""Dependencies are not installed. Run:
+	print("""Missing dependencies. Run:
 pip install -r requirements.txt""")
 	exit(1)
 
