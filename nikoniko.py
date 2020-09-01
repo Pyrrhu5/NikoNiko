@@ -8,6 +8,10 @@
 
 import os
 from getpass import getpass
+import requests
+import re
+
+
 from datetime import datetime
 import time
 
@@ -30,43 +34,82 @@ TRIES_UNTIL_TIMEOUT = 5
 
 
 class Config():
-	def __init__():
+	def __init__(self):
 
 		self.file = os.path.join(MODULE_PATH, ".env")
 		dotenv.load_dotenv(self.file)
 
 		# NikoNiko config
-		self.endpoint = self.get_env("endpoint", safe=False)
-		self.username = self.get_env("username", safe=False)
-		self.password = self.get_env("password", safe=True)
+		self.endpoint = self._get_env("illuca_endpoint", safe=False)
+		self.username = self._get_env("illuca_username", safe=False)
+		self.password = self._get_env("illuca_password", safe=True)
 
 
 	def _get_env(self, name, safe=False):
 		if name in os.environ:
 			return os.environ.get(name)
 		else:
-			return self.set_env(name, safe)
+			return self._set_env(name, safe)
 
 	def _set_env(self, name, safe=False):
 		if not safe:
 			val = input(f"Input value for {name}:\n")
 		else:
 			val = getpass(f"Input value for {name}:\nWill be save in plain-text\n")
-		with open(os.file, "a") as f:
-			f.write(f"\"{name}\"=\"{val}\"")
+		with open(self.file, "a") as f:
+			f.write(f"{name}={val}\n")
 		os.environ[name] = str(val)
 
 		return val
 
 
+def illuca_connection(endpoint, username, password):
+	# Maintain the session cookies
+	session = requests.Session()
+	# grap the login page to fetch the CSRF token
+	homePageResponse = session.get(endpoint)
+	if homePageResponse.status_code != 200:
+		with open(os.path.join(MODULE_PATH, "failed.html"), "wb") as f:
+			f.write(homePageResponse.content)
+		print(f"Failed to get the home page. Status code {homePageResponse.status_code}")
+		exit(1)
+
+	# Fetch the CSRF token
+	homePageContent = homePageResponse.content
+	regexToken = re.compile("<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"([a-zA-Z0-9_-]*)")
+	token = regexToken.search(str(homePageContent)).group(1)
+	if token == '':
+		print("Failed to fetch the CSRF token")
+		with open(os.path.join(MODULE_PATH, "failed.html"), "wb") as f:
+			f.write(homePageResponse.content)
+		exit(1)
+
+	# login
+	payload = {
+		"ReturnUrl":None,
+		"UserName":username,
+		"Password":password,
+		"IsPersistent":"false",
+		"__RequestVerificationToken": token
+	}
+	conn = session.post(endpoint + "/identity/login", data=payload)
+	if conn.status_code != 200:
+		print(f"Failed to connect. Status code: {conn.status_code}")
+		with open(os.path.join(MODULE_PATH, "failed.html"), "wb") as f:
+			f.write(conn.content)
+		exit(1)
+
+	return session
+
+
+
+
 MOODS = ('#EE5555','#EE8C55','#CCF576','#62DA84') # de gauche à droite : du pire au meilleur
-
 READABLE_MOODS = {'#EE5555' : 'D:','#EE8C55' : '):','#CCF576' : '(:','#62DA84' : 'C:'}
-
 MOODS_PROB = (0.05,0.25,0.6,0.1) # probabilities of mood, in the same order
 
 
-def fill_mood(config=CONFIG):
+def fill_mood(config):
     browser = webdriver.Firefox()
     browser.get(config.endpoint + '/identity/login/')
     
@@ -120,4 +163,5 @@ def check_page(browser, pageName, errorMessage):
 
 if __name__ == "__main__":
 	CONFIG = Config()
-	fill_mood()
+	session = illuca_connection(CONFIG.endpoint, CONFIG.username, CONFIG.password)
+	print(session)
