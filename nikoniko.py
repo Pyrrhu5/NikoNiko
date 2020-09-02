@@ -15,50 +15,10 @@ import re
 from datetime import datetime
 import time
 
-try:
-	import dotenv
-	from numpy.random import choice
-except ModuleNotFoundError:
-	print("""Missing dependencies. Run:
-pip install -r requirements.txt""")
-	exit(1)
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 ERRORFILE = 'errors.log'
 HISTOFILE = 'moods.log'
-# check_page and click_mood functions will wait a maximum of WAIT_DELAY * TRIES_UNTIL_TIMEOUT before it kills the script execution
-WAIT_DELAY = 1
-TRIES_UNTIL_TIMEOUT = 5
-
-
-class Config():
-	def __init__(self):
-
-		self.file = os.path.join(MODULE_PATH, ".env")
-		dotenv.load_dotenv(self.file)
-
-		# NikoNiko config
-		self.endpoint = self._get_env("illuca_endpoint", safe=False)
-		self.username = self._get_env("illuca_username", safe=False)
-		self.password = self._get_env("illuca_password", safe=True)
-
-
-	def _get_env(self, name, safe=False):
-		if name in os.environ:
-			return os.environ.get(name)
-		else:
-			return self._set_env(name, safe)
-
-	def _set_env(self, name, safe=False):
-		if not safe:
-			val = input(f"Input value for {name}:\n")
-		else:
-			val = getpass(f"Input value for {name}:\nWill be save in plain-text\n")
-		with open(self.file, "a") as f:
-			f.write(f"{name}={val}\n")
-		os.environ[name] = str(val)
-
-		return val
 
 
 def illuca_connection(endpoint, username, password):
@@ -156,9 +116,9 @@ def check_page(browser, pageName, errorMessage):
             exit()
 
 if __name__ == "__main__":
-	CONFIG = Config()
 	# session = illuca_connection(CONFIG.endpoint, CONFIG.username, CONFIG.password)
 	# print(session)
-	from src.Mood import Mood
+	from src import Mood, Config
 	for i in range(50):
 		print(Mood.random_pick())
+	print(Config(MODULE_PATH).username)
