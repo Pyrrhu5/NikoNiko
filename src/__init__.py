@@ -3,3 +3,4 @@
 
 from src.Mood import Mood
 from src.Config import Config
+from src.Illuca import Illuca

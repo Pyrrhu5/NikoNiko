@@ -7,17 +7,14 @@
 # 	https://github.com/mozilla/geckodriver/releases
 
 import os
-import requests
-import re
-
-
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 ERRORFILE = 'errors.log'
 HISTOFILE = 'moods.log'
 
-
 if __name__ == "__main__":
-	# session = illuca_connection(CONFIG.endpoint, CONFIG.username, CONFIG.password)
-	from src import Mood, Config
+	from src import Mood, Config, Illuca
 	CONFIG = Config(MODULE_PATH)
+	conn = Illuca(CONFIG.endpoint, os.path.join(MODULE_PATH, "failures_pages"))
+	conn.connect(CONFIG.username, CONFIG.password)
+	print(conn)
