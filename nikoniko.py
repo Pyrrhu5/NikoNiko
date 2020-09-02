@@ -7,7 +7,6 @@
 # 	https://github.com/mozilla/geckodriver/releases
 
 import os
-from getpass import getpass
 import requests
 import re
 
