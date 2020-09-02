@@ -17,8 +17,6 @@ import time
 
 try:
 	import dotenv
-	from selenium import webdriver
-	from selenium.webdriver.common.keys import Keys
 	from numpy.random import choice
 except ModuleNotFoundError:
 	print("""Missing dependencies. Run:
@@ -104,10 +102,6 @@ def illuca_connection(endpoint, username, password):
 
 
 
-MOODS = ('#EE5555','#EE8C55','#CCF576','#62DA84') # de gauche à droite : du pire au meilleur
-READABLE_MOODS = {'#EE5555' : 'D:','#EE8C55' : '):','#CCF576' : '(:','#62DA84' : 'C:'}
-MOODS_PROB = (0.05,0.25,0.6,0.1) # probabilities of mood, in the same order
-
 
 def fill_mood(config):
     browser = webdriver.Firefox()
@@ -163,5 +157,8 @@ def check_page(browser, pageName, errorMessage):
 
 if __name__ == "__main__":
 	CONFIG = Config()
-	session = illuca_connection(CONFIG.endpoint, CONFIG.username, CONFIG.password)
-	print(session)
+	# session = illuca_connection(CONFIG.endpoint, CONFIG.username, CONFIG.password)
+	# print(session)
+	from src.Mood import Mood
+	for i in range(50):
+		print(Mood.random_pick())
