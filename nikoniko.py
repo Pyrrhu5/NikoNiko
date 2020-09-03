@@ -17,4 +17,7 @@ if __name__ == "__main__":
 	CONFIG = Config(MODULE_PATH)
 	conn = Illuca(CONFIG.endpoint, os.path.join(MODULE_PATH, "failures_pages"))
 	conn.connect(CONFIG.username, CONFIG.password)
-	print(conn)
+	pick = Mood.random_pick()
+	print(f"Mood selected: ${pick}")
+	pst = conn.post_mood(pick)
+	print("Successful post: ${pst}")

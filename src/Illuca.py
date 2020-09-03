@@ -4,6 +4,7 @@
 import os
 import requests
 import re
+from datetime import datetime
 
 
 class Illuca():
@@ -58,6 +59,30 @@ class Illuca():
 			return False
 
 		return True
+
+	def post_mood(self, mood, date=datetime.now()):
+		if not self.is_connected(): 
+			print("Not connected to service. Aborted.")
+			return False
+
+
+		headers = {
+			'Content-type':'application/json',
+			'Accept':'application/json'
+		}
+		payload = {
+			"type": mood.jsonVal,
+			"date": date.strftime("%Y-%m-%d")
+
+		}
+
+		req = self.session.post(
+			self.url + "/niko-niko/11/api/moods",
+			json=payload,
+			headers=headers
+		)
+
+		return req.status_code == 200	
 
 	def is_connected(self):
 		return self.session is not None
