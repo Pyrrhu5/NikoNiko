@@ -1,16 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-# Nécessite le navigateur firefox : 
-# 	https://www.mozilla.org/fr/firefox/new/
-# Nécessite le driver geckodriver (l'utilitaire doit être dans le même répertoire que ce script) :
-# 	https://github.com/mozilla/geckodriver/releases
-
 import os
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
-ERRORFILE = 'errors.log'
-HISTOFILE = 'moods.log'
 
 if __name__ == "__main__":
 	from src import Mood, Config, Illuca
@@ -20,4 +13,4 @@ if __name__ == "__main__":
 	pick = Mood.random_pick()
 	print(f"Mood selected: ${pick}")
 	pst = conn.post_mood(pick)
-	print("Successful post: ${pst}")
+	print("Is post successful: ${pst}")
