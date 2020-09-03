@@ -13,4 +13,4 @@ if __name__ == "__main__":
 	pick = Mood.random_pick()
 	print(f"Mood selected: {pick}")
 	pst = conn.post_mood(pick)
-	print("Is post successful: {pst}")
+	print(f"Is post successful: {pst}")
