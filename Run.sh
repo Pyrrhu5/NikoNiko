@@ -1,5 +1,7 @@
 #! /bin/bash
-source venv/bin/activate
+
+ROOT_PATH="`dirname \"$0\"`"
+source $ROOT_PATH/venv/bin/activate
 # virtualenv is now active.
 #
-python NikoNiko.py
+python $ROOT_PATH/NikoNiko.py
