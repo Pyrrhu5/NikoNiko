@@ -7,17 +7,17 @@ import random
 class Mood():
 	instances = WeakSet()
 
-	def __init__(self, name, jsonVal, proba=None, rpr=None):
+	def __init__(self, name, jsonVal, proba=None, emoji=None):
 		self.name = name
-		if rpr: self.rpr = rpr.decode()
-		else: self.rpr = rpr
+		if emoji: self.emoji = emoji.decode()
+		else: self.emoji = emoji
 		self.jsonVal = jsonVal
 		self.proba = proba
 
 		self.instances.add(self)
 
 	def __str__(self):
-		return f"{self.rpr or self.name} (Json value: {self.jsonVal})" 
+		return f"{self.emoji} {self.name} (Json value: {self.jsonVal})" 
 
 	@classmethod
 	def random_pick(cls):
