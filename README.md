@@ -1,6 +1,6 @@
 # NikoNiko
 
-Bot to register "daily mood" on Iluca's NikoNiko, randomly pick a mood an post it.
+Bot to register "daily mood" on Iluca's NikoNiko, randomly pick a mood and post it.
 
 ## Installation
 
