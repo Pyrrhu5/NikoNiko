@@ -1,23 +1,17 @@
-# <++>
+# NikoNiko
 
-**Version**: <++> 
-
-<++>
+Bot to register "daily mood" on Iluca's NikoNiko, randomly pick a mood an post it.
 
 ## Installation
+
+Only tested on Linux.
 
 **Python**
 
 Python version 3.6 or above
 
-_On Linux/Mac:_
 ```bash
 python3 --version
-```
-
-_On Windows_:
-```bash
-python --version
 ```
 
 **Clone the repository**
@@ -29,63 +23,57 @@ git --version
 
 Clone it
 ```bash
-git clone <++> <Where you want to install it>
+git clone https://aymericdeschard@bitbucket.org/aymericdeschard/nikoniko.git
+```
+
+**Virtual env**
+
+Optional, but `Run.sh` assumes you have setup a virtual env as such:
+
+```bash
+python3 -m venv venv
 ```
 
 **Dependencies**
 
-Install dependencies:
-
-_On Linux/Mac:_
+Activate the virtual env first:
 ```bash
-pip3 install -r requirements.txt
+source ./venv/bin/activate
 ```
 
-_On Windows_:
+Install dependencies:
+
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 **Executable**
 
 Allows execution of entry point (not needed for Windows)
 ```bash
-chmod +x <++>
+chmod +x NikoNiko.py
 ```
-
-**Bash shortcut**
-
-If you want to access it directly from the terminal (Linux and MacOsX) with the command `<++>`:
-
+or, if using the virtual env
 ```bash
-INSTALL_DIR="<the full path to the installation directory>"
-printf "# <++>\nalias <++>='${INSTALL_DIR}/<++>.py'" >> ~/.bash_aliases
+chmod +x Run.sh
 ```
 
-**Update**
+**Crontab**
+
+Post it at 17:30 from Monday to Friday
+
+```
+30 17 * * 1-5 <install path>/nikoniko/Run.sh >> <where you want the logs>/nikoniko.log
+```
+
+## Update
 
 ```bash
 git pull
 ```
 
-## Documentation
-See <++> 
-
-## Changelog
-See <++>
 
 ## License
 Unmodified [MIT license](https://opensource.org/licenses/MIT)
 
 See `License.md`
-
-## Contributing
-
-I welcome any suggestion, corrections or improvements via push requests or email.
-
-Please do report any bugs with:
-
-- the error message,
-- the log,
-- the steps to reproduce it,
-- the OS type and version
