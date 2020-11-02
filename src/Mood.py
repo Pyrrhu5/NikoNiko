@@ -36,8 +36,8 @@ class Mood():
 	@classmethod
 	def basic_instances(cls):
 		return cls("angry", 0, 0.05, b'\xf0\x9f\x98\xa4'), \
-				cls("grim", 1, 0.1, b'\xf0\x9f\x98\xac'), \
-				cls("neutral", 2, 0.6, b'\xf0\x9f\x99\x82'), \
+				cls("grim", 1, 0.2, b'\xf0\x9f\x98\xac'), \
+				cls("neutral", 2, 0.5, b'\xf0\x9f\x99\x82'), \
 				cls("happy", 3, 0.25, b'\xf0\x9f\x99\x8c')
 
 
