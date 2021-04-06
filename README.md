@@ -22,9 +22,6 @@ git --version
 ```
 
 Clone it
-```bash
-git clone https://aymericdeschard@bitbucket.org/aymericdeschard/nikoniko.git
-```
 
 **Virtual env**
 
@@ -57,6 +54,8 @@ or, if using the virtual env
 ```bash
 chmod +x Run.sh
 ```
+
+Run it once to set it up.
 
 **Crontab**
 
